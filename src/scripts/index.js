@@ -1,34 +1,29 @@
+import createStore from './ownRedux';
+import reducer from './reducer';
+
 const addBtn = document.querySelector('#add');
 const subBtn = document.querySelector('#sub');
 const asyncBtn = document.querySelector('#async');
 const themeBtn = document.querySelector('#theme');
 const counter = document.querySelector('#counter');
 
-let count = 0;
+const store = createStore(reducer, 0);
 
-const render = () => {
-  counter.textContent = count;
-};
+store.subscribe(() => {
+  const state = store.getState();
+  counter.textContent = state;
+});
 
-render();
+store.dispatch({type: 'INIT'});
 
 addBtn.addEventListener('click', () => {
-  count++;
-  render();
+  store.dispatch({type: 'INCREMENT'});
 });
 
 subBtn.addEventListener('click', () => {
-  count--;
-  render();
+  store.dispatch({type: 'DECREMENT'});
 });
 
-asyncBtn.addEventListener('click', () => {
-  setTimeout(() => {
-    count++;
-    render();
-  }, 2000);
-});
+asyncBtn.addEventListener('click', () => {});
 
-themeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-});
+themeBtn.addEventListener('click', () => {});

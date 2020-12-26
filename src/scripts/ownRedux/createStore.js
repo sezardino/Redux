@@ -1,16 +1,16 @@
 const createStore = (reducer, initialState) => {
-  const state = reducer(initialState, '__INIT__');
+  let state = reducer(initialState, '__INIT__');
   const subscribers = [];
   return {
-    getStore() {
-      return this.state;
+    dispatch(action) {
+      state = reducer(state, action);
+      subscribers.forEach((item) => item());
     },
     subscribe(callback) {
       subscribers.push(callback);
     },
-    dispatch(action) {
-      state = reducer(state, action);
-      subscribers.forEach((item) => item());
+    getState() {
+      return state;
     },
   };
 };
